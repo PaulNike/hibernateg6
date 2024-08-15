@@ -1,5 +1,8 @@
 package com.codigo.hibernate_persistencia.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +23,11 @@ public class BlogEntity {
     @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL
             , fetch = FetchType.LAZY)
     private List<PostEntity> posts = new ArrayList<>();
+
+    @Transient
+    private int totalPosts;
+
+    public void actualizarTotalPost(){
+        this.totalPosts = this.posts.size();
+    }
 }
