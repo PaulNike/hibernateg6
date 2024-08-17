@@ -3,13 +3,11 @@ package com.codigo.hibernate_persistencia.controller;
 import com.codigo.hibernate_persistencia.dao.BlogRepository;
 import com.codigo.hibernate_persistencia.entity.BlogEntity;
 import com.codigo.hibernate_persistencia.entity.PostEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/blog/v1")
@@ -21,6 +19,7 @@ public class BlogController {
     }
 
     @PostMapping("/crear")
+    @Transactional
     public ResponseEntity<?> createBlog(@RequestBody BlogEntity blog){
         blog.getPosts().forEach(post -> post.setBlog(blog));
         return new ResponseEntity<>(blogRepository.save(blog)
@@ -55,4 +54,6 @@ public class BlogController {
             return new ResponseEntity<>(blogRepository.save(blog)
                     , HttpStatus.CREATED);
     }
+
+
 }
